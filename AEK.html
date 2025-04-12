@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://gqisrbmtulpopxdtkvua.supabase.co/storage/v1/object/public/xa.l.yx//Untitled%20design%20(4)-Photoroom.png">
+    <title>شهداؤنا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B0000;
+            --secondary-color: #500000;
+            --accent-color: #FFD700;
+            --light-color: #F5F5F5;
+            --dark-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            min-height: 100vh;
+            padding-top: 70px; /* Space for sticky header */
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .admin-btn {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .admin-btn:hover {
+            background-color: #e6c200;
+            transform: translateY(-2px);
+        }
+
+        .search-container {
+            margin: 1rem auto;
+            width: 90%;
+            max-width: 600px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 25px;
+            font-size: 1rem;
+            text-align: right;
+            transition: all 0.3s;
+        }
+
+        #search:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.3);
+        }
+
+        .videos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .video-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 0;
+            background-color: #000;
+        }
+
+        /* Aspect ratio classes */
+        .ratio-9-16 {
+            padding-bottom: 177.78%; /* 16:9 */
+        }
+
+        .ratio-1-1 {
+            padding-bottom: 100%;
+        }
+
+        .ratio-16-9 {
+            padding-bottom: 56.25%; /* 9:16 */
+        }
+
+        .ratio-4-5 {
+            padding-bottom: 125%;
+        }
+
+        .video-thumbnail video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .martyr-name {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .video-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .like-btn, .download-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .like-btn {
+            color: var(--primary-color);
+        }
+
+        .like-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .download-btn {
+            color: var(--secondary-color);
+        }
+
+        .download-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .delete-video-btn {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: rgba(139, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            display: none;
+            transition: all 0.3s;
+        }
+
+        .delete-video-btn:hover {
+            background-color: rgba(255, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .video-card:hover .delete-video-btn {
+            display: flex;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--accent-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: white;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Admin Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            animation: slideUp 0.4s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 1rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .aspect-ratio-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .aspect-ratio-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .aspect-ratio-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .aspect-ratio-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 1002;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            transition: transform 0.3s;
+        }
+
+        .close-sidebar:hover {
+            transform: rotate(90deg);
+            color: var(--primary-color);
+        }
+
+        .playlist-item {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .playlist-item:hover {
+            background-color: #f9f9f9;
+            transform: translateX(-5px);
+        }
+
+        .playlist-item button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .playlist-item button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .current-playlist {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem;
+            margin: 1rem;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .clear-playlist-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .clear-playlist-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            animation: fadeIn 0.3s;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Highlight active playlist */
+        .playlist-item.active {
+            background-color: rgba(139, 0, 0, 0.1);
+            font-weight: bold;
+            border-right: 3px solid var(--primary-color);
+        }
+
+        /* Social Links */
+        .social-links {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .social-link:hover {
+            background-color: rgba(139, 0, 0, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .social-link i {
+            font-size: 1.2rem;
+        }
+
+        .instagram { color: #E1306C; }
+        .tiktok { color: #000000; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .videos-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .sidebar {
+                width: 280px;
+            }
+        }
+
+        /* Video Controls Customization */
+        video::-webkit-media-controls {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-play-button {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-volume-slider {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-mute-button {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-timeline {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-current-time-display {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-time-remaining-display {
+            display: flex !important;
+        }
+
+        video::-webkit-media-controls-fullscreen-button {
+            display: flex !important;
+        }
+    </style>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <h1>شهداؤنا</h1>
+        <button class="admin-btn" id="adminBtn">لوحة التحكم</button>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="ابحث عن شهيد أو فيديو...">
+    </div>
+
+    <div id="currentPlaylistContainer" style="display: none;">
+        <div class="current-playlist">
+            <span id="currentPlaylistName"></span>
+            <button class="clear-playlist-btn" id="clearPlaylistBtn">×</button>
+        </div>
+    </div>
+
+    <div class="videos-container" id="videosContainer">
+        <!-- Videos will be loaded here -->
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">جاري التحميل...</div>
+    </div>
+
+    <!-- Sidebar for playlists -->
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">القائمة</div>
+            <button class="close-sidebar" id="closeSidebar">&times;</button>
+        </div>
+        
+        <!-- Social Links Section -->
+        <div class="social-links">
+            <a href="https://www.instagram.com/xa.l.yx?igsh=czN1emducWZ3ZzY4" target="_blank" class="social-link instagram">
+                <i class="fab fa-instagram"></i>
+                <span>إنستغرام</span>
+            </a>
+            <a href="https://www.tiktok.com/@xa.l.ix?_t=ZS-8vTMOPvMFjc&_r=1" target="_blank" class="social-link tiktok">
+                <i class="fab fa-tiktok"></i>
+                <span>تيك توك</span>
+            </a>
+        </div>
+        
+        <div id="playlistsSidebar">
+            <div class="playlist-item" id="allVideosItem">
+                <span>جميع الفيديوهات</span>
+            </div>
+            <!-- Playlists will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>لوحة التحكم</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="upload">رفع فيديو</div>
+                    <div class="tab" data-tab="playlists">قوائم التشغيل</div>
+                </div>
+
+                <div class="tab-content active" id="uploadTab">
+                    <form id="uploadForm">
+                        <div class="form-group">
+                            <label for="martyrName">اسم الشهيد</label>
+                            <input type="text" id="martyrName" >
+                        </div>
+                        <div class="form-group">
+                            <label for="videoTitle">عنوان الفيديو</label>
+                            <input type="text" id="videoTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="videoUrl">رابط الفيديو</label>
+                            <input type="url" id="videoUrl" placeholder="https://example.com/video.mp4" required>
+                        </div>
+                        <div class="form-group">
+                            <label>نسبة العرض إلى الارتفاع</label>
+                            <div class="aspect-ratio-buttons">
+                                <button type="button" class="aspect-ratio-btn" data-ratio="9-16">9:16 (رأسي)</button>
+                                <button type="button" class="aspect-ratio-btn" data-ratio="16-9">16:9 (أفقي)</button>
+                                <button type="button" class="aspect-ratio-btn selected" data-ratio="1-1">1:1 (مربع)</button>
+                                <button type="button" class="aspect-ratio-btn" data-ratio="4-5">4:5</button>
+                            </div>
+                            <input type="hidden" id="videoAspectRatio" value="1-1">
+                        </div>
+                        <div class="form-group">
+                            <label for="playlistSelect">قائمة التشغيل</label>
+                            <select id="playlistSelect" required>
+                                <option value="">اختر قائمة تشغيل</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="upload-btn" id="uploadBtn">حفظ الفيديو</button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="playlistsTab">
+                    <div class="form-group">
+                        <label for="newPlaylistName">إنشاء قائمة تشغيل جديدة</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="newPlaylistName" placeholder="اسم قائمة التشغيل">
+                            <button id="createPlaylistBtn" class="upload-btn">إنشاء</button>
+                        </div>
+                    </div>
+                    
+                    <div class="playlists-container" id="playlistsContainer">
+                        <!-- Playlists will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration - replace with your own
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjGLXTZKPpV6U7gRMcdGVPN2uhguVWDSQ",
+            authDomain: "xalyx-d248b.firebaseapp.com",
+            databaseURL: "https://xalyx-d248b-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "xalyx-d248b",
+            storageBucket: "xalyx-d248b.firebasestorage.app",
+            messagingSenderId: "356891304194",
+            appId: "1:356891304194:web:b3ccefeaf20101b222221b",
+            measurementId: "G-0RC0QM5GKV"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // DOM elements
+        const videosContainer = document.getElementById('videosContainer');
+        const loading = document.getElementById('loading');
+        const adminBtn = document.getElementById('adminBtn');
+        const adminModal = document.getElementById('adminModal');
+        const closeModal = document.getElementById('closeModal');
+        const uploadForm = document.getElementById('uploadForm');
+        const searchInput = document.getElementById('search');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const playlistSelect = document.getElementById('playlistSelect');
+        const newPlaylistName = document.getElementById('newPlaylistName');
+        const createPlaylistBtn = document.getElementById('createPlaylistBtn');
+        const playlistsContainer = document.getElementById('playlistsContainer');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const overlay = document.getElementById('overlay');
+        const playlistsSidebar = document.getElementById('playlistsSidebar');
+        const currentPlaylistContainer = document.getElementById('currentPlaylistContainer');
+        const currentPlaylistName = document.getElementById('currentPlaylistName');
+        const clearPlaylistBtn = document.getElementById('clearPlaylistBtn');
+        const aspectRatioBtns = document.querySelectorAll('.aspect-ratio-btn');
+        const videoAspectRatio = document.getElementById('videoAspectRatio');
+        const allVideosItem = document.getElementById('allVideosItem');
+
+        // Variables
+        let videos = [];
+        let isAdmin = false;
+        let currentPlaylist = null;
+        let videoElements = []; // Store video elements for scroll handling
+        let currentlyPlayingVideo = null; // Track currently playing video
+
+        // Admin code
+        const ADMIN_CODE = "1012";
+
+        // Show loading
+        function showLoading() {
+            loading.style.display = "flex";
+        }
+
+        // Hide loading
+        function hideLoading() {
+            loading.style.display = "none";
+        }
+
+        // Format date
+        function formatDate(timestamp) {
+            if (!timestamp) return "";
+            if (timestamp.toDate) {
+                return timestamp.toDate().toLocaleDateString('ar-EG');
+            }
+            return new Date(timestamp).toLocaleDateString('ar-EG');
+        }
+
+        // Load videos from Firestore
+        function loadVideos(searchTerm = '') {
+            showLoading();
+            
+            // Clear previous videos
+            videosContainer.innerHTML = '';
+            videos = [];
+            videoElements = []; // Reset video elements array
+            
+            // Get all videos from Firestore
+            db.collection('videos').get().then(querySnapshot => {
+                console.log(`Total videos found: ${querySnapshot.size}`);
+                
+                if (querySnapshot.empty) {
+                    showNoVideosMessage(searchTerm);
+                    hideLoading();
+                    return;
+                }
+                
+                // Filter videos in JavaScript rather than Firestore query for maximum compatibility
+                let filteredVideos = querySnapshot.docs.map(doc => {
+                    const videoData = doc.data();
+                    return { id: doc.id, ...videoData };
+                });
+                
+                // Sort videos by timestamp (newest first)
+                filteredVideos.sort((a, b) => {
+                    const timeA = a.timestamp ? (a.timestamp.seconds || 0) : 0;
+                    const timeB = b.timestamp ? (b.timestamp.seconds || 0) : 0;
+                    return timeB - timeA;
+                });
+                
+                // Apply playlist filter if needed
+                if (currentPlaylist) {
+                    console.log(`Filtering by playlist ID: ${currentPlaylist.id}`);
+                    
+                    // Try various playlist ID matching strategies
+                    filteredVideos = filteredVideos.filter(video => {
+                        // Check different possible ways the playlistId might be stored
+                        const hasPlaylistId = video.playlistId !== undefined;
+                        const hasPlaylist = video.playlist !== undefined;
+                        const hasPlaylistField = hasPlaylistId || hasPlaylist;
+                        
+                        const videoPlaylistId = video.playlistId || video.playlist || null;
+                        
+                        console.log(`Video ${video.id} has playlist field: ${hasPlaylistField}, value: ${videoPlaylistId}`);
+                        
+                        // Try multiple matching strategies
+                        const exactMatch = videoPlaylistId === currentPlaylist.id;
+                        const stringMatch = String(videoPlaylistId) === String(currentPlaylist.id);
+                        
+                        return exactMatch || stringMatch;
+                    });
+                    
+                    console.log(`Found ${filteredVideos.length} videos for playlist ${currentPlaylist.id}`);
+                }
+                
+                // Apply search filter if needed
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredVideos = filteredVideos.filter(video => 
+                        (video.title && video.title.toLowerCase().includes(term)) ||
+                        (video.martyrName && video.martyrName.toLowerCase().includes(term))
+                    );
+                    
+                    console.log(`Found ${filteredVideos.length} videos matching search: "${searchTerm}"`);
+                }
+                
+                // Update videos array
+                videos = filteredVideos;
+                
+                // Display videos
+                if (filteredVideos.length === 0) {
+                    showNoVideosMessage(searchTerm);
+                } else {
+                    filteredVideos.forEach(video => createVideoCard(video));
+                }
+                
+                // Initialize intersection observer for videos
+                initVideoVisibilityObserver();
+                
+                hideLoading();
+            }).catch(error => {
+                console.error("Error loading videos:", error);
+                hideLoading();
+                
+                videosContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <p>حدث خطأ أثناء تحميل الفيديوهات</p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            });
+        }
+        
+        // Initialize Intersection Observer for video visibility with sound control
+        function initVideoVisibilityObserver() {
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.6 // 60% of video must be visible
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
+                    
+                    if (entry.isIntersecting) {
+                        // Video is visible - play if not already playing
+                        if (video.paused) {
+                            // Pause currently playing video if any
+                            if (currentlyPlayingVideo && currentlyPlayingVideo !== video) {
+                                currentlyPlayingVideo.pause();
+                            }
+                            
+                            // Play the new video and unmute
+                            video.muted = false;
+                            video.play().catch(e => {
+                                console.log("Autoplay prevented:", e);
+                                // If autoplay fails, mute and try again (for browsers that block autoplay with sound)
+                                video.muted = true;
+                                video.play().catch(e => console.log("Muted autoplay also prevented:", e));
+                            });
+                            
+                            currentlyPlayingVideo = video;
+                        }
+                    } else {
+                        // Video is not visible - pause it (but don't mute)
+                        if (!video.paused && video === currentlyPlayingVideo) {
+                            video.pause();
+                        }
+                    }
+                });
+            }, options);
+            
+            // Observe all video cards
+            document.querySelectorAll('.video-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+        
+        // Show message when no videos
+        function showNoVideosMessage(searchTerm = '') {
+            let message = '';
+            if (currentPlaylist) {
+                message = `لا توجد فيديوهات في قائمة "${currentPlaylist.name}"`;
+            } else {
+                message = 'لا توجد فيديوهات متاحة';
+            }
+            
+            if (searchTerm) {
+                message = `لا توجد نتائج بحث لـ "${searchTerm}"`;
+            }
+            
+            videosContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // Create video card HTML
+        function createVideoCard(video) {
+            const videoCard = document.createElement('div');
+            videoCard.className = 'video-card';
+            
+            // Determine aspect ratio class
+            const aspectRatioClass = video.aspectRatio ? `ratio-${video.aspectRatio}` : 'ratio-1-1';
+            
+            videoCard.innerHTML = `
+                ${isAdmin ? '<button class="delete-video-btn" data-id="' + video.id + '">×</button>' : ''}
+                <div class="video-thumbnail ${aspectRatioClass}">
+                    <video controls muted playsinline>
+                        <source src="${video.videoUrl}" type="video/mp4">
+                        متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">${video.title || 'بدون عنوان'}</h3>
+                    <p class="martyr-name">${video.martyrName || ''}</p>
+                    <div class="video-actions">
+                        <button class="like-btn" data-id="${video.id}">
+                            <span class="like-icon">👍</span>
+                            <span class="like-count">${video.likes || 0}</span>
+                        </button>
+                        <button class="download-btn" data-url="${video.videoUrl}">
+                            <span class="download-icon">⬇️</span>
+                            تحميل
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            videosContainer.appendChild(videoCard);
+            
+            // Add event listeners
+            const likeBtn = videoCard.querySelector('.like-btn');
+            likeBtn.addEventListener('click', () => {
+                likeVideo(video.id);
+            });
+            
+            const downloadBtn = videoCard.querySelector('.download-btn');
+            downloadBtn.addEventListener('click', () => {
+                downloadVideo(downloadBtn.getAttribute('data-url'));
+            });
+            
+            if (isAdmin) {
+                const deleteBtn = videoCard.querySelector('.delete-video-btn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteVideo(video.id);
+                    });
+                }
+            }
+            
+            // Store the video element for later reference
+            const videoElement = videoCard.querySelector('video');
+            if (videoElement) {
+                // Add event listener for when user manually plays a video
+                videoElement.addEventListener('play', () => {
+                    // Pause any other playing video
+                    if (currentlyPlayingVideo && currentlyPlayingVideo !== videoElement) {
+                        currentlyPlayingVideo.pause();
+                    }
+                    currentlyPlayingVideo = videoElement;
+                });
+                
+                videoElements.push({
+                    id: video.id,
+                    element: videoElement,
+                    card: videoCard
+                });
+            }
+        }
+
+        // Like a video
+        function likeVideo(videoId) {
+            const videoRef = db.collection('videos').doc(videoId);
+            
+            db.runTransaction((transaction) => {
+                return transaction.get(videoRef).then((doc) => {
+                    if (!doc.exists) {
+                        throw "Document does not exist!";
+                    }
+                    
+                    const newLikes = (doc.data().likes || 0) + 1;
+                    transaction.update(videoRef, { likes: newLikes });
+                    return newLikes;
+                });
+            }).then((newLikes) => {
+                // Update like count in UI
+                const likeCountElements = document.querySelectorAll(`.like-btn[data-id="${videoId}"] .like-count`);
+                likeCountElements.forEach(el => {
+                    el.textContent = newLikes;
+                });
+                
+                // Update local videos array
+                const videoIndex = videos.findIndex(v => v.id === videoId);
+                if (videoIndex !== -1) {
+                    videos[videoIndex].likes = newLikes;
+                }
+            }).catch((error) => {
+                console.error("Transaction failed: ", error);
+            });
+        }
+
+        // Download video
+        function downloadVideo(videoUrl) {
+            showLoading();
+            
+            // Create a temporary anchor element
+            const a = document.createElement('a');
+            a.href = videoUrl;
+            a.download = videoUrl.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            hideLoading();
+        }
+
+        // Delete video
+        function deleteVideo(videoId) {
+            if (confirm("هل أنت متأكد من حذف هذا الفيديو؟")) {
+                showLoading();
+                
+                db.collection('videos').doc(videoId).delete()
+                    .then(() => {
+                        hideLoading();
+                        loadVideos(searchInput.value.trim()); // Refresh the list
+                    })
+                    .catch(error => {
+                        hideLoading();
+                        console.error("Error deleting video: ", error);
+                        alert("حدث خطأ أثناء حذف الفيديو");
+                    });
+            }
+        }
+
+        // Add video to Firestore
+        function addVideo(martyrName, title, videoUrl, playlistId, aspectRatio) {
+            showLoading();
+            
+            const videoData = {
+                martyrName,
+                title,
+                videoUrl,
+                likes: 0,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                aspectRatio: aspectRatio || '1-1',
+                playlistId: playlistId // Store playlist ID
+            };
+            
+            console.log("Adding new video:", videoData);
+            
+            db.collection('videos').add(videoData)
+                .then(() => {
+                    hideLoading();
+                    uploadForm.reset();
+                    alert("تم إضافة الفيديو بنجاح");
+                    loadVideos(searchInput.value.trim()); // Refresh the list with current search term
+                })
+                .catch(error => {
+                    hideLoading();
+                    console.error("Error adding video: ", error);
+                    alert("حدث خطأ أثناء إضافة الفيديو");
+                });
+        }
+
+        // Load playlists
+        function loadPlaylists() {
+            db.collection('playlists').orderBy('createdAt', 'desc').get().then((querySnapshot) => {
+                console.log(`Found ${querySnapshot.size} playlists`);
+                
+                playlistSelect.innerHTML = '<option value="">اختر قائمة تشغيل</option>';
+                playlistsContainer.innerHTML = '';
+                
+                // Clear sidebar playlists except "All Videos"
+                const allVideosItem = document.getElementById('allVideosItem');
+                playlistsSidebar.innerHTML = '';
+                playlistsSidebar.appendChild(allVideosItem);
+                
+                // Add click event to "All Videos" item
+                allVideosItem.addEventListener('click', () => {
+                    clearPlaylistFilter();
+                });
+                
+                // Set "All Videos" as active if there's no current playlist
+                if (!currentPlaylist) {
+                    allVideosItem.classList.add('active');
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const playlist = doc.data();
+                    const playlistId = doc.id;
+                    playlist.id = playlistId;
+                    
+                    console.log(`Loaded playlist: ${playlist.name} (ID: ${playlistId})`);
+                    
+                    // Add to dropdown
+                    const option = document.createElement('option');
+                    option.value = playlistId;
+                    option.textContent = playlist.name;
+                    playlistSelect.appendChild(option);
+                    
+                    // Add to playlists container (admin)
+                    const playlistItem = document.createElement('div');
+                    playlistItem.className = 'playlist-item';
+                    playlistItem.innerHTML = `
+                        <span>${playlist.name}</span>
+                        <button class="delete-btn" data-id="${playlistId}">حذف</button>
+                    `;
+                    playlistsContainer.appendChild(playlistItem);
+                    
+                    // Add to sidebar
+                    const sidebarItem = document.createElement('div');
+                    sidebarItem.className = 'playlist-item';
+                    
+                    // Set active class if this is the current playlist
+                    if (currentPlaylist && currentPlaylist.id === playlistId) {
+                        sidebarItem.classList.add('active');
+                    }
+                    
+                    sidebarItem.innerHTML = `
+                        <span>${playlist.name}</span>
+                    `;
+                    playlistsSidebar.appendChild(sidebarItem);
+                    
+                    // Add delete event listener (admin)
+                    const deleteBtn = playlistItem.querySelector('.delete-btn');
+                    deleteBtn.addEventListener('click', () => {
+                        if (confirm(`هل أنت متأكد من حذف قائمة التشغيل "${playlist.name}"؟`)) {
+                            deletePlaylist(playlistId);
+                        }
+                    });
+                    
+                    // Add click event listener to filter by playlist
+                    sidebarItem.addEventListener('click', () => {
+                        filterVideosByPlaylist({id: playlistId, name: playlist.name});
+                    });
+                });
+            }).catch(error => {
+                console.error("Error loading playlists:", error);
+            });
+        }
+
+        // Filter videos by playlist
+        function filterVideosByPlaylist(playlist) {
+            console.log(`Filtering by playlist: ${playlist.name} (ID: ${playlist.id})`);
+            
+            // Set current playlist
+            currentPlaylist = playlist;
+            currentPlaylistName.textContent = playlist.name;
+            currentPlaylistContainer.style.display = 'block';
+            
+            // Update UI to show which playlist is active
+            document.querySelectorAll('.playlist-item').forEach(item => {
+                item.classList.remove('active');
+                
+                const playlistNameEl = item.querySelector('span');
+                if (playlistNameEl && playlistNameEl.textContent === playlist.name) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Load videos filtered by playlist
+            loadVideos(searchInput.value.trim());
+            
+            closeSidebarHandler();
+        }
+
+        // Clear playlist filter
+        function clearPlaylistFilter() {
+            console.log("Clearing playlist filter");
+            
+            // Reset current playlist
+            currentPlaylist = null;
+            currentPlaylistContainer.style.display = 'none';
+            
+            // Update UI
+            document.querySelectorAll('.playlist-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Make "All Videos" active
+            const allVideosItem = document.getElementById('allVideosItem');
+            if (allVideosItem) {
+                allVideosItem.classList.add('active');
+            }
+            
+            // Load all videos
+            loadVideos(searchInput.value.trim());
+            
+            closeSidebarHandler();
+        }
+
+        // Create new playlist
+        function createPlaylist(name) {
+            if (!name) {
+                alert("الرجاء إدخال اسم قائمة التشغيل");
+                return;
+            }
+            
+            showLoading();
+            
+            db.collection('playlists').add({
+                name,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                hideLoading();
+                alert("تم إنشاء قائمة التشغيل بنجاح");
+                newPlaylistName.value = '';
+                loadPlaylists();
+            }).catch((error) => {
+                console.error("Error creating playlist: ", error);
+                hideLoading();
+                alert("حدث خطأ أثناء إنشاء قائمة التشغيل");
+            });
+        }
+
+        // Delete playlist
+        function deletePlaylist(playlistId) {
+            showLoading();
+            
+            // First, check if there are any videos in this playlist
+            db.collection('videos').get()
+                .then((querySnapshot) => {
+                    const playlistVideos = querySnapshot.docs.filter(doc => {
+                        const video = doc.data();
+                        return video.playlistId === playlistId || 
+                               String(video.playlistId) === String(playlistId);
+                    });
+                    
+                    if (playlistVideos.length > 0) {
+                        // Ask if user wants to delete videos too
+                        if (confirm(`هذه القائمة تحتوي على ${playlistVideos.length} فيديو. هل تريد حذف الفيديوهات أيضًا؟`)) {
+                            // Delete all videos in this playlist
+                            const batch = db.batch();
+                            playlistVideos.forEach(doc => {
+                                batch.delete(doc.ref);
+                            });
+                            
+                            return batch.commit().then(() => {
+                                return db.collection('playlists').doc(playlistId).delete();
+                            });
+                        } else {
+                            // Just update videos to remove playlist reference
+                            const batch = db.batch();
+                            playlistVideos.forEach(doc => {
+                                batch.update(doc.ref, { 
+                                    playlistId: firebase.firestore.FieldValue.delete() 
+                                });
+                            });
+                            
+                            return batch.commit().then(() => {
+                                return db.collection('playlists').doc(playlistId).delete();
+                            });
+                        }
+                    } else {
+                        // No videos, just delete the playlist
+                        return db.collection('playlists').doc(playlistId).delete();
+                    }
+                })
+                .then(() => {
+                    hideLoading();
+                    loadPlaylists();
+                    
+                    // If we're currently viewing this playlist, clear the filter
+                    if (currentPlaylist && currentPlaylist.id === playlistId) {
+                        clearPlaylistFilter();
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error deleting playlist: ", error);
+                    hideLoading();
+                    alert("حدث خطأ أثناء حذف قائمة التشغيل");
+                });
+        }
+
+        // Close sidebar handler
+        function closeSidebarHandler() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Event listeners
+        adminBtn.addEventListener('click', () => {
+            const code = prompt("الرجاء إدخال كود المسؤول:");
+            if (code === ADMIN_CODE) {
+                isAdmin = true;
+                loadPlaylists();
+                adminModal.style.display = "flex";
+                
+                // Show delete buttons on existing videos
+                document.querySelectorAll('.video-card').forEach(card => {
+                    const likeBtn = card.querySelector('.like-btn');
+                    if (likeBtn) {
+                        const videoId = likeBtn.getAttribute('data-id');
+                        const existingDeleteBtn = card.querySelector('.delete-video-btn');
+                        
+                        if (!existingDeleteBtn && videoId) {
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.className = 'delete-video-btn';
+                            deleteBtn.innerHTML = '×';
+                            deleteBtn.setAttribute('data-id', videoId);
+                            deleteBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                deleteVideo(videoId);
+                            });
+                            card.insertBefore(deleteBtn, card.firstChild);
+                        }
+                    }
+                });
+            } else {
+                alert("كود المسؤول غير صحيح");
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            adminModal.style.display = "none";
+        });
+
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const martyrName = document.getElementById('martyrName').value;
+            const title = document.getElementById('videoTitle').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+            const playlistId = playlistSelect.value;
+            const aspectRatio = videoAspectRatio.value;
+            
+            // Check network connection
+            if (!navigator.onLine) {
+                alert("لا يوجد اتصال بالإنترنت. الرجاء الاتصال ثم المحاولة مرة أخرى");
+                return;
+            }
+            
+            // Check if required fields are filled
+            if (!title || !videoUrl || !playlistId) {
+                alert("الرجاء ملء جميع الحقول المطلوبة");
+                return;
+            }
+            
+            addVideo(martyrName, title, videoUrl, playlistId, aspectRatio);
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.trim();
+            loadVideos(searchTerm);
+        });
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active tab content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tabId}Tab`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        createPlaylistBtn.addEventListener('click', () => {
+            const name = newPlaylistName.value.trim();
+            if (name) {
+                createPlaylist(name);
+            } else {
+                alert("الرجاء إدخال اسم قائمة التشغيل");
+            }
+        });
+
+        // Menu button click
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        // Close sidebar
+        closeSidebar.addEventListener('click', closeSidebarHandler);
+        overlay.addEventListener('click', closeSidebarHandler);
+
+        // Clear playlist filter
+        clearPlaylistBtn.addEventListener('click', clearPlaylistFilter);
+
+        // Aspect ratio button selection
+        aspectRatioBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                aspectRatioBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                videoAspectRatio.value = btn.getAttribute('data-ratio');
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === adminModal) {
+                adminModal.style.display = "none";
+            }
+        });
+
+        // Initial load
+        loadVideos();
+        loadPlaylists();
+    </script>
+</body>
+</html>
